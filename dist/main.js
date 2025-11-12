@@ -37,7 +37,9 @@ dotenv_1.default.config();
 // Electron reads CHROME_DESKTOP to derive the desktop file ID, which becomes
 // the Wayland app_id (desktop file basename without ".desktop").
 // Must be set before app.whenReady().
-process.env.CHROME_DESKTOP = "progress-tracker.desktop";
+if (process.platform === "linux") {
+    process.env.CHROME_DESKTOP = "progress-tracker.desktop";
+}
 // Global reference to window to prevent garbage collection
 let mainWindow = null;
 /**
@@ -130,6 +132,19 @@ function createWindow() {
  */
 electron_1.app.whenReady().then(() => {
     electron_1.app.setName("ProgressTracker");
+    // First time we're opening app?
+    const firstRunFlagPath = path_1.default.join(electron_1.app.getPath("userData"), ".auto-launch-configured");
+    // Enable auto launch if first app open.
+    if (!fs_1.default.existsSync(firstRunFlagPath)) {
+        electron_1.app.setLoginItemSettings({
+            openAtLogin: true,
+            openAsHidden: false,
+            name: "Progress Tracker",
+        });
+        // Create flag file.
+        fs_1.default.writeFileSync(firstRunFlagPath, "");
+        console.info("[startup] Auto-launch enabled on first run.");
+    }
     setupContentSecurityPolicy();
     (0, password_1.setupPasswordIpc)();
     (0, auth_1.setupAuthIpc)();

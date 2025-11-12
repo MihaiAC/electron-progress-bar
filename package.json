@@ -7,9 +7,11 @@
   "scripts": {
     "dev": "npm run compile && concurrently -k \"npm:watch\" \"npm:dev:*\"",
     "dev:react": "cd frontend && npm run dev",
-    "dev:electron": "wait-on tcp:5173 && VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
+    "dev:electron": "wait-on tcp:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
     "build": "npm run compile && cd frontend && npm run build",
     "pack": "npm run build && electron-builder --linux deb",
+    "pack:win": "npm run build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win",
+    "pack:all": "npm run build && electron-builder --linux deb --win",
     "start": "electron .",
     "compile": "tsc",
     "watch": "tsc -w",
@@ -34,7 +36,9 @@
     "@eslint/js": "^9.29.0",
     "@types/node": "^24.0.3",
     "concurrently": "^9.1.2",
+    "cross-env": "^10.1.0",
     "electron": "^36.4.0",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",
@@ -72,8 +76,29 @@
       "icon": "assets/icons",
       "executableName": "progress-tracker",
       "desktop": {
-        "StartupWMClass": "ProgressTracker"
+        "entry": {
+          "StartupWMClass": "ProgressTracker"
+        }
       }
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Progress Tracker"
     }
   }
 }

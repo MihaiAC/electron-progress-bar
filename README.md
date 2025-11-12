@@ -123,7 +123,7 @@ A simple desktop app for customisable progress bars with notes, themes, sounds, 
 1. Install dependencies:
    - Root: `npm install`
    - Frontend: `cd frontend && npm install`
-2. Create `.env` in project root:
+2. (Optional) You can override the default dropbox key by creating a `.env` in project root:
    - `DROPBOX_APP_KEY=your_app_key`
 3. Dev: `npm run dev` (Vite + Electron).
 
@@ -131,9 +131,13 @@ A simple desktop app for customisable progress bars with notes, themes, sounds, 
 
 - `npm run pack` → `.deb` in `release/`.
 
+## Build (Windows .exe)
+
+- `npm run pack:win` → `.exe` in `release/`.
+
 ## Platform
 
-- Built and tested on Ubuntu (X11/Wayland). No plans for Windows or macOS.
+- Built and tested on Ubuntu (X11/Wayland) and Windows 11.
 
 # A small rant about Google Cloud
 
