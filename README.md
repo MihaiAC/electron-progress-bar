@@ -1,6 +1,6 @@
 # Progress Tracker (Electron + React + Tailwind)
 
-A simple desktop app for customisable progress bars with notes, themes, sounds, and encrypted Dropbox (manual) backup. Only tested on Ubuntu.
+A simple desktop app for customisable progress bars with notes, themes, sounds, and encrypted Dropbox (manual) backup. Tested on Ubuntu and Windows 11.
 
 ## Features
 
